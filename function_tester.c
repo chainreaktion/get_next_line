@@ -1,26 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   function_tester.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/09 19:58:52 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/10 17:50:23 by jschmitz         ###   ########.fr       */
+/*   Created: 2024/07/11 21:39:52 by jschmitz          #+#    #+#             */
+/*   Updated: 2024/07/11 21:58:21 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 
 
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+void	function_tester(const char *testfile)
+{
+	int	file_des;
+	int
 
-char	*get_next_line(int fd);
-void	get_next_line_utils(...);
+	file_des = open(testfile, O_RDONLY, ...);
 
-# endif
+}}
+
+int	main()
+{
+	function_tester(argv[1])
+}
