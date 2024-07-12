@@ -6,34 +6,40 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/11 20:03:12 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/12 23:06:48 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+int	calc_str_length(list)
+{
+//(number if elements in the liste -1) * buf_size + length string last list-element
+}
+//list free function
+
+//add element function
+
+//function concatenate strings from list and null-terminate(char *str, list_adress), takes address to allocated string
+
 char	*get_next_line(int fd)
 {
 	static char	*line;
-	//static car so that at the next call the next line is given, not the same
 	int		length;
 
 	length = line_length(&length)
-	open O_RDONLY
-	//read
-	//then copy buf to line
-	//until line break
-	line = (char *)malloc(sizeof(char) * nbyte + 1)
+	line = (char *)malloc(sizeof(char) * calc_str_length + 1);
+	if (line == NULL)
+	{
+		free (list);
+		return (NULL);
+	}
 	//nbyte is the buffer size and it's given with the function call..?
 	//read returns -1 if there is an error
-	return (line)
-	//sends bqck the pointer to the string containing the line it just read
-	//when read returns "0" this mean it's the end of the file
+	return (line);
 }
 int	main (int argc, char **argv)
 {
-//make a main that reads line per line until the end
-//while (get_next_line != 0)
 char *input;
 char *line;
 
