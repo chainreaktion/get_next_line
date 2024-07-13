@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/10 17:13:00 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/11 21:24:43 by jschmitz         ###   ########.fr       */
+/*   Created: 2024/07/09 19:58:52 by jschmitz          #+#    #+#             */
+/*   Updated: 2024/07/13 22:25:00 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 20
 
-int	line_length(int *length)
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+typedef struct s_list
 {
-	length = 0;
+	char			content[BUFFER_SIZE];
+	struct s_list	*next;
+}					t_list;
+
+char	*get_next_line(int fd);
 
 
-
-}
-intft_strchr 
-
-int	read_line(...__int nbyte)
-{
-
-	read (file, buf, nbyte)
-
-}
+# endif
