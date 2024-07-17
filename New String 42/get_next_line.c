@@ -6,7 +6,7 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/17 15:02:38 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/18 00:08:04 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,52 +15,62 @@
 char	*read_line(int fd, char **line, char *buf_cpy)
 {
 	int		read_output;
-	char	buffer[BUFFER_SIZE];
-	size_t	i;
+	char	buffer[BUFFER_SIZE + 1];
 
-	i = 0;
 	read_output = 1;
-	if
-
+	printf("read_line function start");
 	while (read_output != 0)
 	{
 		read_output = read (fd, buffer, BUFFER_SIZE);
 		if (read_output < 0)
-			return (-1);
-		if (read_output == 0)
 			return (NULL);
+			//error message missing
+		if (read_output == 0)
+			break ;
 		buf_cpy = ft_strdup(buffer);
-		if (ft_strchr(buf_cpy, '\n') == 0 || ft_strchr(buf_cpy, '\n') == 0)
+		if (ft_strchr(buf_cpy, '\n') != 0 || ft_strchr(buf_cpy, '\n') != 0)
 			return (buf_cpy);
-		line = ft_strjoin(line, buf_cpy);
-		i++;
+		*line = ft_strjoin(*line, buf_cpy);
 	}
-
 	return (buf_cpy);
+}
+
+int	last_buffer(char **line, char **next_line_start, char *last_buf)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	j= 0;
+	while (last_buf[i] != '\n' && last_buf[i] != '\0')
+		i++;
+	tmp = (char *)malloc(sizeof(char) * i + 1);
+	if (line_end == NULL)
+		return (NULL);
+	while (j <= i)
+	{
+		line_end[j] = last_buf[j];
+		j++;
+	}
+	if (line_end[j - 1] != '\0')
+		line_end[j]= '\0';
+	return (line_end);
 }
 
 char	*get_next_line(int fd)
 {
-	char	*line;
-	size_t	array_siz;
-	size_t	line_length;
-	char	*buf_cpy;
-	size_t	i;
+	char		*line;
+	char		*buf_cpy;
+	static char	*line_start;
 
-	if (read_line(&buffer_set, fd) < 0)
-	{
-		return (NULL);
-	}
-	array_siz = array_size(buffer_set);
-	line_length = (array_siz - 1) * BUFFER_SIZE + ft_strlen(buffer_set[array_siz]);
-	line = (char *)malloc(sizeof(char) * line_length + 1);
-	if (line == NULL)
-	{
-		free(buf_cpy)
-		return (NULL);
-	}
-
-
+	if (line_start = 0)
+		line_start = ft_strdup("");
+	line = ft_strjoin(line, line_start);
+	buf_cpy = read_line(fd, &line, buf_cpy);
+	if (ft_strchr(buf_cpy, '\n') != 0 || ft_strchr(buf_cpy, '\0') != 0)
+		last_buffer(&line, buf_cpy);
+	free (buf_cpy);
 	return (line);
 }
 
@@ -78,5 +88,7 @@ int	main (void)
 	line = get_next_line(fd);
 	printf("%s", line);
 	close (fd);
+	free (line);
 	return (0);
 }
+
