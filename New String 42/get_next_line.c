@@ -6,7 +6,7 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/18 00:08:04 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/18 21:09:49 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*read_line(int fd, char **line, char *buf_cpy)
 	char	buffer[BUFFER_SIZE + 1];
 
 	read_output = 1;
-	printf("read_line function start");
 	while (read_output != 0)
 	{
 		read_output = read (fd, buffer, BUFFER_SIZE);
@@ -35,7 +34,7 @@ char	*read_line(int fd, char **line, char *buf_cpy)
 	return (buf_cpy);
 }
 
-int	last_buffer(char **line, char **next_line_start, char *last_buf)
+char*	last_buffer(char *last_buf)
 {
 	int		i;
 	int		j;
@@ -46,16 +45,38 @@ int	last_buffer(char **line, char **next_line_start, char *last_buf)
 	while (last_buf[i] != '\n' && last_buf[i] != '\0')
 		i++;
 	tmp = (char *)malloc(sizeof(char) * i + 1);
-	if (line_end == NULL)
+	if (tmp == NULL)
 		return (NULL);
 	while (j <= i)
 	{
-		line_end[j] = last_buf[j];
+		tmp[j] = last_buf[j];
 		j++;
 	}
-	if (line_end[j - 1] != '\0')
-		line_end[j]= '\0';
-	return (line_end);
+	if (tmp[j - 1] != '\0')
+		tmp[j]= '\0';
+	return (tmp);
+}
+
+char*	start_nextline(char *buf_cpy, char *line_start)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (buf_cpy[i] != '\n')
+		i++;
+	i++;
+	line_start = (char *)malloc(sizeof(char) * (BUFFER_SIZE - i + 1));
+	if (line_start == NULL)
+		return (NULL);
+	while (i + j < BUFFER_SIZE)
+	{
+		line_start[j] = buf_cpy[j + i];
+		j++;
+	}
+	line_start[j] = '\0';
+	return (line_start);
 }
 
 char	*get_next_line(int fd)
@@ -63,15 +84,38 @@ char	*get_next_line(int fd)
 	char		*line;
 	char		*buf_cpy;
 	static char	*line_start;
+	char		*last_buf;
+	char		*output;
 
-	if (line_start = 0)
+if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+{
+	free (line_start);
+	//free (buf_cpy);
+	line_start = NULL;
+	//buf_cpy = NULL;
+	return (NULL);
+}
+	if (line_start == 0)
+	{
+		printf("test");
 		line_start = ft_strdup("");
+	}
 	line = ft_strjoin(line, line_start);
 	buf_cpy = read_line(fd, &line, buf_cpy);
 	if (ft_strchr(buf_cpy, '\n') != 0 || ft_strchr(buf_cpy, '\0') != 0)
-		last_buffer(&line, buf_cpy);
+	{
+		last_buf = last_buffer(buf_cpy);
+		/* if (last_buf == NULL)
+			return (NULL); */
+		line = ft_strjoin(line, last_buf);
+		if (ft_strchr(buf_cpy, '\n') != 0)
+			line_start = start_nextline(buf_cpy, line_start);
+	}
+	free (last_buf);
 	free (buf_cpy);
-	return (line);
+	output = ft_strdup(line);
+	free (line);
+	return (output);
 }
 
 int	main (void)
@@ -85,6 +129,8 @@ int	main (void)
 		perror("open");
 		return (1);
 	}
+	line = get_next_line(fd);
+	printf("%s", line);
 	line = get_next_line(fd);
 	printf("%s", line);
 	close (fd);

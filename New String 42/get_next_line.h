@@ -6,7 +6,7 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:52 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/17 23:45:08 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/18 20:50:44 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,12 @@
 # include <unistd.h>
 
 char	*read_line(int fd, char **line, char *buf_cpy);
-char	*last_buffer(char *last_buf, char *line_end);
+char	*last_buffer(char *last_buf);
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(char *s, int c);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
+char*	start_nextline(char *buf_cpy, char *line_start);
 
 #endif
