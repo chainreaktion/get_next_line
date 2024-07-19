@@ -6,7 +6,7 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/19 21:18:00 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/19 22:48:57 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char*	last_buffer(char *last_buf)
 		i++;
 	tmp = (char *)malloc(sizeof(char) * i + 1);
 	if (tmp == NULL)
-		return (NULL);
+		return (free (last_buf), NULL);
 	while (j <= i)
 	{
 		tmp[j] = last_buf[j];
@@ -57,25 +57,23 @@ char*	last_buffer(char *last_buf)
 	return (tmp);
 }
 
-char*	start_nextline(char *buf_cpy, char *line_start)
+char*	start_nextline(char *buf_cpy)
 {
 	int	i;
 	int	j;
+	char *line_start;
 
 	i = 0;
-	j = 0;
-	while (buf_cpy[i] != '\n')
+	while (buf_cpy[i] && buf_cpy[i] != '\n')
 		i++;
-	i++;
-	line_start = (char *)malloc(sizeof(char) * (BUFFER_SIZE - i + 1));
+	j = i + 1;
+	line_start = (char *)malloc(sizeof(char) * (ft_strlen(buf_cpy) + 1));
 	if (line_start == NULL)
-		return (NULL);
-	while (i + j < BUFFER_SIZE)
-	{
-		line_start[j] = buf_cpy[j + i];
-		j++;
-	}
-	line_start[j] = '\0';
+		return (free (buf_cpy), NULL);
+	i = 0;
+	while (buf_cpy[j])
+		line_start[i++] = buf_cpy[j++];
+	line_start[i] = '\0';
 	return (line_start);
 }
 
@@ -85,22 +83,30 @@ char	*get_next_line(int fd)
 	char		*buf_cpy;
 	static char	*line_start;
 	char		*last_buf;
-//	char		*output;
 
 if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 {
 	free (line_start);
-	//free (buf_cpy);
-	line_start = NULL;
-	//buf_cpy = NULL;
+	free (line);
+	free(buf_cpy);
 	return (NULL);
 }
-	if (line_start == 0)
-	{
-		line_start = ft_strdup("");
-	}
 	line = "";
-	//buf_cpy = "";
+	if (line_start == 0)
+		line_start = "";
+	if (ft_strchr(line_start, '\n') != 0 || ft_strchr(line_start, '\0') != 0)
+	{
+		buf_cpy = strdup(line_start);
+		last_buf = last_buffer(buf_cpy);
+		if (last_buf == NULL)
+			return (NULL);
+		line = ft_strjoin(line, last_buf);
+		if (ft_strchr(buf_cpy, '\n') != 0)
+			line_start = start_nextline(buf_cpy, line_start);
+		free (last_buf);
+		free (buf_cpy);
+		return (line);
+	}
 	line = ft_strjoin(line, line_start);
 	buf_cpy = read_line(fd, &line, buf_cpy);
 	if (ft_strchr(buf_cpy, '\n') != 0 || ft_strchr(buf_cpy, '\0') != 0)
