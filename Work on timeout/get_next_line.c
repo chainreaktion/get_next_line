@@ -6,7 +6,7 @@
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/22 20:46:52 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/22 21:33:41 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,10 @@ char	*read_next_line(int fd, char *tmp_line, char *buffer)
 		read_bytes = read (fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
 			return (free(buffer), NULL);
-		// if (read_bytes == 0 && ft_strchr(tmp_line, '\n') == 0)
-		// 	return(free(buffer), NULL);
 		buffer[read_bytes] = '\0';
 		tmp_line = ft_strjoin(tmp_line, buffer);
 		if (read_bytes == 0 && tmp_line[0] == 0)
-			return(free(buffer), free(tmp_line), NULL);
+			return (free(buffer), free(tmp_line), NULL);
 		if (ft_strchr(buffer, '\n') != 0)
 			break ;
 	}
@@ -61,7 +59,6 @@ char	*get_tmp_line(char *tmp_line)
 		i++;
 	}
 	tmp_new[i] = '\0';
-	//return (free(tmp_line), tmp_new);
 	return (free(tmp_line), tmp_new);
 }
 
@@ -112,11 +109,8 @@ char	*get_next_line(int fd)
 	if (buffer == 0)
 		return (NULL);
 	tmp_line = read_next_line(fd, tmp_line, buffer);
-//	printf("tmp_line");
 	if (tmp_line == NULL)
 		return (free(tmp_line), NULL);
-/* 	if (*tmp_line == 0)
-		return (free(tmp_line), tmp_line = NULL); */
 	line = trim_start(tmp_line, line);
 	tmp_line = get_tmp_line(tmp_line);
 	return (line);
