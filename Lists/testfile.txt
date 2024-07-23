@@ -1,2 +1,0 @@
-Das hier ist ein Test, hier kommt eine neue Zeile.
-Das hier ist die zweite Zeile, nach dem Punkt ist der Text zu Ende.
