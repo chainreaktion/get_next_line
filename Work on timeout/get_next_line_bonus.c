@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/23 22:10:38 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/07/23 22:10:21 by jschmitz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 //reads the line and returns it to the main function (incl. start next line)
 char	*read_next_line(int fd, char *tmp_line, char *buffer)
@@ -92,33 +92,41 @@ char	*trim_start(char *tmp_line, char *line)
 
 char	*get_next_line(int fd)
 {
-	static char	*tmp_line;
+	static char	*array_tmp_line[1024];
 	char		*line;
 	char		*buffer;
 
 	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 	{
-		free(tmp_line);
+		free(array_tmp_line[fd]);
 		free(line);
-		tmp_line = NULL;
+		array_tmp_line[fd] = NULL;
 		line = NULL;
 		return (NULL);
 	}
 	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (buffer == 0)
 		return (NULL);
-	tmp_line = read_next_line(fd, tmp_line, buffer);
-	if (tmp_line == NULL)
-		return (free(tmp_line), NULL);
-	line = trim_start(tmp_line, line);
-	tmp_line = get_tmp_line(tmp_line);
+	array_tmp_line[fd] = read_next_line(fd, array_tmp_line[fd], buffer);
+	if (array_tmp_line[fd] == NULL)
+		return (free(array_tmp_line[fd]), NULL);
+	line = trim_start(array_tmp_line[fd], line);
+	array_tmp_line[fd] = get_tmp_line(array_tmp_line[fd]);
 	return (line);
 }
 // int	main (void)
 // {
 // 	char	*line;
 // 	int		fd;
+// 	char	*line1;
+// 	int		fd1;
+// 	char	*line2;
+// 	int		fd2;
+// 	char	*line3;
+// 	int		fd3;
+// 	char	*line4;
+// 	int		fd4;
 
 // 	fd = open("testfile.txt", O_RDONLY);
 // 	if (fd == -1)
@@ -126,21 +134,105 @@ char	*get_next_line(int fd)
 // 		perror("open");
 // 		return (1);
 // 	}
+// 	fd1 = open("testfile1.txt", O_RDONLY);
+// 	if (fd1 == -1)
+// 	{
+// 		perror("open1");
+// 		return (1);
+// 	}
+// 	fd2 = open("testfile2.txt", O_RDONLY);
+// 	if (fd2 == -1)
+// 	{
+// 		perror("open2");
+// 		return (1);
+// 	}
+// 	fd3 = open("testfile3.txt", O_RDONLY);
+// 	if (fd3 == -1)
+// 	{
+// 		perror("open3");
+// 		return (1);
+// 	}
+// 	fd4 = open("testfile4.txt", O_RDONLY);
+// 	if (fd4 == -1)
+// 	{
+// 		perror("open4");
+// 		return (1);
+// 	}
 // //	printf("test");
 // 	line = get_next_line(fd);
 // 	printf("%s", line);
 // 	free (line);
+// 	line1 = get_next_line(fd1);
+// 	printf("(1) %s", line1);
+// 	free (line1);
+// 	line2 = get_next_line(fd2);
+// 	printf("(2) %s", line2);
+// 	free (line2);
+// 	line3 = get_next_line(fd3);
+// 	printf("(3) %s", line3);
+// 	line4 = get_next_line(fd4);
+// 	printf("(4) %s", line4);
+// 	free (line4);
 // 	line = get_next_line(fd);
 // 	printf("%s", line);
 // 	free (line);
+// 	line1 = get_next_line(fd1);
+// 	printf("(1) %s", line1);
+// 	free (line1);
+// 	line2 = get_next_line(fd2);
+// 	printf("(2) %s", line2);
+// 	free (line2);
+// 	line3 = get_next_line(fd3);
+// 	printf("(3) %s", line3);
+// 	line4 = get_next_line(fd4);
+// 	printf("(4) %s", line4);
+// 	free (line4);
 // 	line = get_next_line(fd);
 // 	printf("%s", line);
 // 	free (line);
+// 	line1 = get_next_line(fd1);
+// 	printf("(1) %s", line1);
+// 	free (line1);
+// 	line2 = get_next_line(fd2);
+// 	printf("(2) %s", line2);
+// 	free (line2);
+// 	line3 = get_next_line(fd3);
+// 	printf("(3) %s", line3);
+// 	line4 = get_next_line(fd4);
+// 	printf("(4) %s", line4);
+// 	free (line4);
 // 	line = get_next_line(fd);
 // 	printf("%s", line);
+// 	free (line);
+// 	line1 = get_next_line(fd1);
+// 	printf("(1) %s", line1);
+// 	free (line1);
+// 	line2 = get_next_line(fd2);
+// 	printf("(2) %s", line2);
+// 	free (line2);
+// 	line3 = get_next_line(fd3);
+// 	printf("(3) %s", line3);
+// 	line4 = get_next_line(fd4);
+// 	printf("(4) %s", line4);
+// 	free (line4);
 // 	line = get_next_line(fd);
 // 	printf("%s", line);
+// 	free (line);
+// 	line1 = get_next_line(fd1);
+// 	printf("(1) %s", line1);
+// 	free (line1);
+// 	line2 = get_next_line(fd2);
+// 	printf("(2) %s", line2);
+// 	free (line2);
+// 	line3 = get_next_line(fd3);
+// 	printf("(3) %s", line3);
+// 	line4 = get_next_line(fd4);
+// 	printf("(4) %s", line4);
+// 	free (line4);
 // 	close (fd);
-// 	free (line);
+// 	close (fd1);
+// 	close (fd2);
+// 	close (fd3);
+// 	close (fd4);
 // 	return (0);
 // }
