@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jschmitz <jschmitz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: johanna <johanna@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/09 19:58:09 by jschmitz          #+#    #+#             */
-/*   Updated: 2024/07/23 22:10:38 by jschmitz         ###   ########.fr       */
+/*   Updated: 2024/11/07 13:15:41 by johanna          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*trim_start(char *tmp_line, char *line)
 	return (line);
 }
 
-char	*get_next_line(int fd)
+/* char	*get_next_line(int fd)
 {
 	static char	*tmp_line;
 	char		*line;
@@ -111,6 +111,25 @@ char	*get_next_line(int fd)
 	tmp_line = read_next_line(fd, tmp_line, buffer);
 	if (tmp_line == NULL)
 		return (free(tmp_line), NULL);
+	line = trim_start(tmp_line, line);
+	tmp_line = get_tmp_line(tmp_line);
+	return (line);
+} */
+char	*get_next_line(int fd)
+{
+	static char	*tmp_line;
+	char		*line;
+	char		*buffer;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (0);
+	buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (buffer == 0)
+		return (0);
+	line = read_next_line(fd, tmp_line, buffer);
+	free(buffer);
+	if (line == NULL)
+		return (NULL);
 	line = trim_start(tmp_line, line);
 	tmp_line = get_tmp_line(tmp_line);
 	return (line);
